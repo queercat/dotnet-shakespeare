@@ -1,6 +1,11 @@
+using System.IO;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+var QUOTES_PATH = System.IO.Path.Combine(builder.Environment.ContentRootPath, "Data", "quotes.json");
+
+// Inject the quote service.
+builder.Services.AddScoped<IQuoteService, QuoteService>(_ => new QuoteService(QUOTES_PATH));
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

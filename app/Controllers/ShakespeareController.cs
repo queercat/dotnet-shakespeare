@@ -6,21 +6,19 @@ using Microsoft.AspNetCore.Mvc;
 [ApiController]
 public class ShakespeareController : ControllerBase
 {
-    private const string Path = "/Data/quotes.json";
-    private readonly string[] _quotes;
+    private readonly IQuoteService _quoteService;
 
-    public ShakespeareController()
+    public ShakespeareController(IQuoteService quoteService)
     {
-        _quotes = JsonSerializer.Deserialize(
-            System.IO.File.ReadAllText(Path),
-            typeof(string[])) as string[] ?? Array.Empty<string>();
+        _quoteService = quoteService;
     }
 
     [Route("text")]
+    [HttpGet]
     public ActionResult getText()
     {
-        var shakespeare = new Shakespeare();
-        shakespeare.Text = _quotes[new Random().Next(0, _quotes.Length)];
-        return new OkObjectResult(shakespeare);
+        Shakespeare shakespeare = new Shakespeare();
+        shakespeare.Text = _quoteService.GetQuote();
+        return Ok(shakespeare);
     }
 }
