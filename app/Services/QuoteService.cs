@@ -7,6 +7,12 @@ public class QuoteService : IQuoteService
     public QuoteService(string path)
     {
         var data = JsonSerializer.Deserialize<Dictionary<string, string[]>>(File.ReadAllText(path));
+
+        if (data == null || !data.ContainsKey("quotes"))
+        {
+            throw new Exception("Invalid quotes file.");
+        }
+
         _quotes = data["quotes"];
     }
 
