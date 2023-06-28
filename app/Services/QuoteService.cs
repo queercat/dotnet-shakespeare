@@ -3,10 +3,13 @@ using System.Text.Json;
 public class QuoteService : IQuoteService
 {
     private string[] _quotes = Array.Empty<string>();
+    private string _path = String.Empty;
 
     public QuoteService(string path)
     {
-        var data = JsonSerializer.Deserialize<Dictionary<string, string[]>>(File.ReadAllText(path));
+        _path = path;
+
+        var data = JsonSerializer.Deserialize<Dictionary<string, string[]>>(File.ReadAllText(_path));
 
         if (data == null || !data.ContainsKey("quotes"))
         {
@@ -27,11 +30,16 @@ public class QuoteService : IQuoteService
         return quote;
     }
 
-    public string SaveQuotes(string path)
+    private void SaveQuotes()
     {
         var data = new Dictionary<string, string[]>();
         data.Add("quotes", this._quotes);
-        File.WriteAllText(path, JsonSerializer.Serialize(data));
-        return path;
+        File.WriteAllText(_path, JsonSerializer.Serialize(data));
+    }
+
+    // On application exit, save the quotes.
+    ~QuoteService()
+    {
+        this.SaveQuotes();
     }
 }
