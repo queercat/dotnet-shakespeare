@@ -1,17 +1,23 @@
 using System;
+using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 
-public class ShakespeareController
+[Route("api/[controller]")]
+[ApiController]
+public class ShakespeareController : ControllerBase
 {
+    private const string Path = "/Data/quotes.json";
     private readonly string[] _quotes;
 
-    public ShakespeareController(string[] quotes)
+    public ShakespeareController()
     {
-        _quotes = quotes;
+        _quotes = JsonSerializer.Deserialize(
+            System.IO.File.ReadAllText(Path),
+            typeof(string[])) as string[] ?? Array.Empty<string>();
     }
 
-    [HttpGet]
-    public IActionResult getText()
+    [Route("text")]
+    public ActionResult getText()
     {
         var shakespeare = new Shakespeare();
         shakespeare.Text = _quotes[new Random().Next(0, _quotes.Length)];
