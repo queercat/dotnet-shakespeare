@@ -26,4 +26,12 @@ public class QuoteService : IQuoteService
         this._quotes = this._quotes.Append(quote).ToArray();
         return quote;
     }
+
+    public string SaveQuotes(string path)
+    {
+        var data = new Dictionary<string, string[]>();
+        data.Add("quotes", this._quotes);
+        File.WriteAllText(path, JsonSerializer.Serialize(data));
+        return path;
+    }
 }
