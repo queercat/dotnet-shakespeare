@@ -27,6 +27,7 @@ public class QuoteService : IQuoteService
     public string AddQuote(string quote)
     {
         this._quotes = this._quotes.Append(quote).ToArray();
+        this.SaveQuotes();
         return quote;
     }
 
@@ -37,7 +38,6 @@ public class QuoteService : IQuoteService
         File.WriteAllText(_path, JsonSerializer.Serialize(data));
     }
 
-    // On application exit, save the quotes.
     ~QuoteService()
     {
         this.SaveQuotes();
