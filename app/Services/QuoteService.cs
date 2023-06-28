@@ -20,4 +20,10 @@ public class QuoteService : IQuoteService
     {
         return _quotes[new Random().Next(0, _quotes.Length)];
     }
+
+    public string AddQuote(string quote)
+    {
+        this._quotes = this._quotes.Append(quote).ToArray();
+        return quote;
+    }
 }

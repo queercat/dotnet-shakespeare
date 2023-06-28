@@ -21,4 +21,12 @@ public class ShakespeareController : ControllerBase
         shakespeare.Text = _quoteService.GetQuote();
         return Ok(shakespeare);
     }
+
+    [Route("text")]
+    [HttpPost]
+    public ActionResult addText([FromBody] Shakespeare shakespeare)
+    {
+        _quoteService.AddQuote(shakespeare.Text);
+        return Ok(shakespeare);
+    }
 }
