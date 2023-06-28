@@ -2,7 +2,7 @@ using System;
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 
-[Route("api/[controller]")]
+[Route("api/shakespeare")]
 [ApiController]
 public class ShakespeareController : ControllerBase
 {
